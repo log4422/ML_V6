@@ -1,6 +1,6 @@
 #Machine Learning Versuch 6
 #Aufgabe D6
-#Version 1.2
+#Version 1.1
 #Autor: Lukas Götz
 #Datum: 24.10.2018
 
