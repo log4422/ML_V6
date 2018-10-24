@@ -1,12 +1,12 @@
-Anleitung zur Installation von Tensorflow mit GPU-Unterstützung
-Autor: Lukas Götz
+Anleitung zur Installation von Tensorflow mit GPU-UnterstÃ¼tzung
+Autor: Lukas GÃ¶tz
 Datum: 24.10.2018
 Dauer der Installation ca. 45 min
 
 
-Vor Beginn der Installation müssen alle alten Python-Versionen deinstalliert werden.
-Die installierten Versionen von Visual Studio, CUDA, cuDNN, Python und Tensorflow müssen aufeinander abgestimmt sein.
-Es kann sein, dass die hier aufgeführten Versionen nicht mehr verfügbar und zum Download bereit stehen.
+Vor Beginn der Installation mÃ¼ssen alle alten Python-Versionen deinstalliert werden.
+Die installierten Versionen von Visual Studio, CUDA, cuDNN, Python und Tensorflow mÃ¼ssen aufeinander abgestimmt sein.
+Es kann sein, dass die hier aufgefÃ¼hrten Versionen nicht mehr verfÃ¼gbar und zum Download bereit stehen.
 
 
 
@@ -15,7 +15,7 @@ https://www.python.org/downloads/release/python-366/
 
 - Download Python 3.6.6 (executable installer)
 - Add to PATH (Haken unbedingt setzen)
-- Empfohlene Einstellungen übernehmen
+- Empfohlene Einstellungen Ã¼bernehmen
 ####################################################################################
 
 
@@ -24,9 +24,9 @@ Schritt 2: Visual Studio #######################################################
 https://visualstudio.microsoft.com/de/downloads/
 
 - Download Visual Studio 2017 (Community)
-- Ausführen der .exe-Datei
-- Installation: Desktop development with C++ (Ist eine zusätzliche Toolbox)
-  (NUR diese Toolbox benötigt, keine 'Python development', kein 'Data storage and processing', ...)	
+- AusfÃ¼hren der .exe-Datei
+- Installation: Desktop development with C++ (Ist eine zusÃ¤tzliche Toolbox)
+  (NUR diese Toolbox benÃ¶tigt, keine 'Python development', kein 'Data storage and processing', ...)	
 ######################################################################################
 
 
@@ -36,7 +36,7 @@ https://developer.nvidia.com/cuda-90-download-archive
 
 - Download als exe(local)
 - Es ist nur der Base installer notwendig
-- Es müssen folgende Pakete richtig installiert werden:
+- Es mÃ¼ssen folgende Pakete richtig installiert werden:
 	+ Nsight for Visual Studio 2017
 	+ Nsight Monitor and HUD Launcher
 (Es werden diverse Pakete als nicht installiert angezeit, das ist kein Problem)
@@ -50,7 +50,7 @@ https://developer.nvidia.com/cudnn
 - Download cuDNN 9.0 
 - Extrahieren des Ordners "Cuda" an beliebigen Ort (z.B C:\Users\user12345)
 - Kopieren der Adresse des Ordners "bin" (im Ordner Cuda)
-- Öffnen des Explorers
+- Ã–ffnen des Explorers
 - Rechtsklick dieser PC
 - Eigenschaften
 - Erweiterte Systemeinstellungen
@@ -58,20 +58,22 @@ https://developer.nvidia.com/cudnn
 - Path
 - Bearbeiten
 - Neu
-- Einfügen des gespeicherten Pfades
+- EinfÃ¼gen des gespeicherten Pfades
 - OK
 ######################################################################################
 
 
 Schritt 5: Tensorflow ################################################################
 
-- Öffnen CMD
+- Ã–ffnen CMD
 - Eingeben des Befehls
 pip install --ignore-installed --upgrade tensorflow-gpu
+ ######################################################################################
  
-### Schritt 6: Funktionstest ###
+ 
+Schritt 6: Funktionstest #############################################################
 
-- Öffnen CMD
+- Ã–ffnen CMD
 
 
 Eingabe: 
@@ -86,7 +88,7 @@ Ausgabe: Keine Errors, keine Warnings
 Eingabe: 
 	hello = tf.constant('Hello world!')
 	 sess = tf.Session()
-Ausgabe:(so oder so ähnlich)
+Ausgabe:(so oder so Ã¤hnlich)
 	2018-10-24 13:17:33.972307: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2
 	2018-10-24 13:17:34.251607: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1411] Found device 0 with properties:
 	name: GeForce GTX 750 major: 5 minor: 0 memoryClockRate(GHz): 1.137
