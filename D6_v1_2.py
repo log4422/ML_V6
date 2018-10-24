@@ -1,5 +1,6 @@
 #Machine Learning Versuch 6
 #Aufgabe D6
+#Version 1.2
 #Autor: Lukas Götz
 #Datum: 24.10.2018
 
@@ -73,8 +74,8 @@ init = tf.global_variables_initializer()
 saver = tf.train.Saver()
 
 #Festlegung Durchläufe
-n_epochs = 60
-batch_size = 2
+n_epochs = 80
+batch_size = 4
 
 #Durchmischen der Trainingsdaten
 def shuffle_batch(X, y, batch_size):
@@ -96,13 +97,13 @@ with tf.Session() as sess:
 
     save_path = saver.save(sess, "G:\Semester_7\ML_V6/my_model_final.ckpt")
 
-#Klassifikation der ersten 20 Testdaten
+#Klassifikation der ersten 10 Testdaten
 with tf.Session() as sess:
     saver.restore(sess, "G:\Semester_7\ML_V6/my_model_final.ckpt")
-    X_new_scaled = X_valid[:20]
+    X_new_scaled = X_valid[:10]
     Z = logits.eval(feed_dict={X: X_new_scaled})
     y_pred = np.argmax(Z, axis=1)
 
 print("Predicted classes:", y_pred)
-print("Actual classes: ", y_valid[:20])
+print("Actual classes:   ", y_valid[:10])
 #-----------------------------------------------------------------------------------------------------------------------
