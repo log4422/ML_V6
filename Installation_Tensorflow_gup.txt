@@ -1,0 +1,107 @@
+Anleitung zur Installation von Tensorflow mit GPU-Unterstützung
+Autor: Lukas Götz
+Datum: 24.10.2018
+Dauer der Installation ca. 45 min
+
+
+Vor Beginn der Installation müssen alle alten Python-Versionen deinstalliert werden.
+Die installierten Versionen von Visual Studio, CUDA, cuDNN, Python und Tensorflow müssen aufeinander abgestimmt sein.
+Es kann sein, dass die hier aufgeführten Versionen nicht mehr verfügbar und zum Download bereit stehen.
+
+
+
+Schritt 1: Python ##################################################################
+https://www.python.org/downloads/release/python-366/
+
+- Download Python 3.6.6 (executable installer)
+- Add to PATH (Haken unbedingt setzen)
+- Empfohlene Einstellungen übernehmen
+####################################################################################
+
+
+
+Schritt 2: Visual Studio ###########################################################
+https://visualstudio.microsoft.com/de/downloads/
+
+- Download Visual Studio 2017 (Community)
+- Ausführen der .exe-Datei
+- Installation: Desktop development with C++ (Ist eine zusätzliche Toolbox)
+  (NUR diese Toolbox benötigt, keine 'Python development', kein 'Data storage and processing', ...)	
+######################################################################################
+
+
+
+Schritt 3: NVIDIA CUDA ##############################################################
+https://developer.nvidia.com/cuda-90-download-archive
+
+- Download als exe(local)
+- Es ist nur der Base installer notwendig
+- Es müssen folgende Pakete richtig installiert werden:
+	+ Nsight for Visual Studio 2017
+	+ Nsight Monitor and HUD Launcher
+(Es werden diverse Pakete als nicht installiert angezeit, das ist kein Problem)
+######################################################################################
+
+
+Schritt 4: NVIDIA cuDNN ##############################################################
+https://developer.nvidia.com/cudnn
+
+- Es muss ein Benutzerkonto erstellt werden
+- Download cuDNN 9.0 
+- Extrahieren des Ordners "Cuda" an beliebigen Ort (z.B C:\Users\user12345)
+- Kopieren der Adresse des Ordners "bin" (im Ordner Cuda)
+- Öffnen des Explorers
+- Rechtsklick dieser PC
+- Eigenschaften
+- Erweiterte Systemeinstellungen
+- Umgebungsvariablen
+- Path
+- Bearbeiten
+- Neu
+- Einfügen des gespeicherten Pfades
+- OK
+######################################################################################
+
+
+Schritt 5: Tensorflow ################################################################
+
+- Öffnen CMD
+- Eingeben des Befehls
+pip install --ignore-installed --upgrade tensorflow-gpu
+ 
+### Schritt 6: Funktionstest ###
+
+- Öffnen CMD
+
+
+Eingabe: 
+	python 
+Ausgabe:
+	Python 3.6.6 (v3.6.6:4cf1f54eb7, Jun 27 2018, 03:37:03) [MSC v.1900 64 bit (AMD64)] on win32
+	Type "help", "copyright", "credits" or "license" for more information.
+
+Eingabe: import tensorflow as tf
+Ausgabe: Keine Errors, keine Warnings
+
+Eingabe: 
+	hello = tf.constant('Hello world!')
+	 sess = tf.Session()
+Ausgabe:(so oder so ähnlich)
+	2018-10-24 13:17:33.972307: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2
+	2018-10-24 13:17:34.251607: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1411] Found device 0 with properties:
+	name: GeForce GTX 750 major: 5 minor: 0 memoryClockRate(GHz): 1.137
+	pciBusID: 0000:01:00.0
+	totalMemory: 2.00GiB freeMemory: 1.65GiB
+	2018-10-24 13:17:34.255853: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1490] Adding visible gpu devices: 0
+	2018-10-24 13:17:35.641767: I tensorflow/core/common_runtime/gpu/gpu_device.cc:971] Device interconnect StreamExecutor with strength 1 edge matrix:
+	2018-10-24 13:17:35.644816: I tensorflow/core/common_runtime/gpu/gpu_device.cc:977]      0
+	2018-10-24 13:17:35.646459: I tensorflow/core/common_runtime/gpu/gpu_device.cc:990] 0:   N
+	2018-10-24 13:17:35.648256: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1103] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 1403 MB memory) -> physical GPU (device: 0, name: GeForce GTX 750, pci bus id: 0000:01:00.0, compute capability: 5.0)
+
+Eingabe: print(sess.run(hello))
+Ausgabe: b'Hello world!'
+######################################################################################
+
+
+=> Installation ist erfolgreich abgeschlossen
+
