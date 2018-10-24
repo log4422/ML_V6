@@ -1,3 +1,11 @@
+#Machine Learning Versuch 6
+#Aufgabe D5
+#Version 1.1
+#Autor: Armin Sehr
+#Bearbeitung: Lukas Götz
+#Datum: 16.10.2018
+
+
 # Dieser Code basiert auf
 # https://github.com/ageron/handson-ml/blob/master/10_introduction_to_artificial_neural_networks.ipynb
 
