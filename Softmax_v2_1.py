@@ -57,7 +57,7 @@ accuarcy = tf.reduce_sum(tf.cast(corr_preds, tf.float32))
 
 
 # Training des Modells---------------------------------------------------------------------------------------------------
-writer = tf.summary.FileWriter('G:\Semester_7\ML_V6/graphs', tf.get_default_graph())
+#writer = tf.summary.FileWriter('G:\Semester_7\ML_V6/graphs', tf.get_default_graph())
 with tf.Session() as sess:
     sess.run(init)  # Initialisierung
     n_batches = int(mnist.train.num_examples / batch_size)  # Berechnung Anzahl batches
@@ -82,5 +82,5 @@ with tf.Session() as sess:
         n_accuary = sess.run(accuarcy, feed_dict={X: x_batch, y: y_batch})
         corr_pred += n_accuary
     print("Genauigkeit des Modells: {0}".format(corr_pred / mnist.test.num_examples))
-writer.close()
+#writer.close()
 # -----------------------------------------------------------------------------------------------------------------------
