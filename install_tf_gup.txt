@@ -1,10 +1,10 @@
 Anleitung zur Installation von Tensorflow mit GPU-Unterstützung
 Autor: Lukas Götz
 Datum: 24.10.2018
-Dauer der Installation ca. 45 min
+Dauer der Installation: ca. 45 min
 
 
-Vor Beginn der Installation müssen alle alten Python-Versionen deinstalliert werden.
+Vor Beginn der Installation müssen alle alten Python-Versionen vom PC deinstalliert werden.
 Die installierten Versionen von Visual Studio, CUDA, cuDNN, Python und Tensorflow müssen aufeinander abgestimmt sein.
 Es kann sein, dass die hier aufgeführten Versionen nicht mehr verfügbar und zum Download bereit stehen.
 
