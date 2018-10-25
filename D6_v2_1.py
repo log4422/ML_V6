@@ -38,7 +38,7 @@ y = tf.placeholder(tf.int32, shape=(None), name="y")
 #Erstellung des Berechnungsgraph----------------------------------------------------------------------------------------
 #Definition von Konstanten
 n_hidden1 = 4
-n_hidden2 = 4
+n_hidden2 = 3
 n_outputs = 3
 learning_rate =0.01
 
@@ -68,14 +68,14 @@ with tf.name_scope("eval"):
 
 
 #Ausführen des Berechnungsgraphen---------------------------------------------------------------------------------------
-
+writer = tf.summary.FileWriter('G:\Semester_7\ML_V6/graphs', tf.get_default_graph())
 #Initialisierung der Variablen
 init = tf.global_variables_initializer()
 saver = tf.train.Saver()
 
 #Festlegung Durchläufe
 n_epochs = 80
-batch_size = 4
+batch_size = 1
 
 #Durchmischen der Trainingsdaten
 def shuffle_batch(X, y, batch_size):
@@ -96,6 +96,7 @@ with tf.Session() as sess:
         print(epoch, "Batch accuracy:", acc_batch, "Val accuracy:", acc_val)
 
     save_path = saver.save(sess, "G:\Semester_7\ML_V6/my_model_final.ckpt")
+writer.close()
 
 #Klassifikation der ersten 10 Testdaten
 with tf.Session() as sess:
