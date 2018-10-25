@@ -1,29 +1,34 @@
-#Aufgabe D4
+#Machine Learning Versuch 6
+#Aufgabe D3
+#Version 1.3
+#Autor: Lukas Götz
+#Datum: 17.10.2018
 
-#Bibliotheken importieren
+
+
+#Bibliotheken importieren-------------------------------------------------------------------------------
 import tensorflow as tf
 import numpy as np
 import matplotlib.pyplot as plt
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 
-
 #Variablendefinitionen
 x = tf.placeholder(dtype=tf.float32)        #Platzhalter x
 m = tf.constant(0.5, dtype=tf.float32)      #Konstante für m
 t = tf.Variable(-2.0, name="t")             #Definierung Variable                           
 n = 0                                       #Definition Zählvariable
-
-y = m*x+t                                   #Definiiton des Berechnungsgraphen
-
-y_np = np.zeros([600,5])                    #Definierung Ergebnismatrix
+#--------------------------------------------------------------------------------------------------------
 
 
-#Definition der Inkrementierung
-assign_op = t.assign(t+1)
+#Definiiton des Berechnungsgraphen-----------------------------------------------------------------------
+y = m*x+t                                   
+y_np = np.zeros([600,5])                    
+assign_op = t.assign(t+1)                   
+#--------------------------------------------------------------------------------------------------------
 
 
-#Ausführen des Berechnungsgraphen
+#Ausführen des Berechnungsgraphen------------------------------------------------------------------------
 x_np = np.arange(-3.0,3.0,0.01)
 with tf.Session() as sess:              #Oeffnen einer TensorFlow Session
     sess.run(t.initializer)                 #Initialisierung von t
@@ -38,11 +43,9 @@ with tf.Session() as sess:              #Oeffnen einer TensorFlow Session
 
     
     print("Form von y =",y_np.shape)                    #Ausgabe Shape des Ergebnisses
+#--------------------------------------------------------------------------------------------------------
 
-sess.close()                            #Schließen der Session
-
-
-#Graphische Darstellung des Ergebnisses
+#Graphische Darstellung des Ergebnisses------------------------------------------------------------------
 plt.figure(1)
 plt.plot(x_np,y_np[:,0],lw=2)
 plt.plot(x_np,y_np[:,1],lw=2)
@@ -54,4 +57,4 @@ plt.title("y=mx+t für t[-2,2]")
 plt.xlabel("x")
 plt.ylabel("y")
 plt.show()
-
+#--------------------------------------------------------------------------------------------------------
