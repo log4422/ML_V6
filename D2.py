@@ -1,4 +1,8 @@
+#Machine Learning Versuch 6
 #Aufgabe D2
+#Version 1.3
+#Autor: Lukas Götz
+#Datum: 10.10.2018
 
 import numpy as np
 import math
@@ -24,5 +28,5 @@ while nochmal == 'ja':
     print(f'Umfang: {U:.2f}')
     print(f'Diagonallänge: {dl:.2f}')
 
-    print('\nWeiteres Rechteck berechnen (ja/nein)?')
+    print('\nWeiteres Rechteck berechnen (j/n)?')
     nochmal=input()
