@@ -117,11 +117,11 @@ with tf.Session() as sess:
         acc_val = accuracy.eval(feed_dict={X: X_valid, y: y_valid})
         print(epoch, "Batch accuracy:", acc_batch, "Val accuracy:", acc_val)
 
-    save_path = saver.save(sess, "./my_model_final.ckpt")
+    save_path = saver.save(sess, "G:\Semester_7\ML_V6/my_model_final.ckpt")
 	
 # Klassifikation der ersten 20 Testdaten und Vergleich der Ergebnisse mit den Labels	
 with tf.Session() as sess:
-    saver.restore(sess, "./my_model_final.ckpt") # or better, use save_path
+    saver.restore(sess, "G:\Semester_7\ML_V6/my_model_final.ckpt") # or better, use save_path
     X_new_scaled = X_test[:20]
     Z = logits.eval(feed_dict={X: X_new_scaled})
     y_pred = np.argmax(Z, axis=1)
