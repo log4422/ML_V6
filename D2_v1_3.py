@@ -17,8 +17,8 @@ def rechteck(a,b):
 
 
 #Hauptprogramm
-nochmal='ja'
-while nochmal == 'ja':
+nochmal='j'
+while nochmal == 'j':
     a=int(input('\nBitte geben Sie die Länge des Rechtecks ein: '))
     b=int(input('Bitte geben Sie die Breite des Rechtecks ein: '))
 
