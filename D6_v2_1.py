@@ -1,6 +1,6 @@
 #Machine Learning Versuch 6
 #Aufgabe D6
-#Version 1.1
+#Version 2.1
 #Autor: Lukas Götz
 #Datum: 24.10.2018
 
@@ -75,7 +75,7 @@ saver = tf.train.Saver()
 
 #Festlegung Durchläufe
 n_epochs = 80
-batch_size = 1
+batch_size = 2
 
 #Durchmischen der Trainingsdaten
 def shuffle_batch(X, y, batch_size):
@@ -95,12 +95,12 @@ with tf.Session() as sess:
         acc_val = accuarcy.eval(feed_dict={X: X_valid, y: y_valid})
         print(epoch, "Batch accuracy:", acc_batch, "Val accuracy:", acc_val)
 
-    save_path = saver.save(sess, "G:\Semester_7\ML_V6/my_model_final.ckpt")
+    save_path = saver.save(sess, "G:\Semester_7\ML_V6/my_model_final_d6.ckpt")
 writer.close()
 
 #Klassifikation der ersten 10 Testdaten
 with tf.Session() as sess:
-    saver.restore(sess, "G:\Semester_7\ML_V6/my_model_final.ckpt")
+    saver.restore(sess, "G:\Semester_7\ML_V6/my_model_final_d6.ckpt")
     X_new_scaled = X_valid[:10]
     Z = logits.eval(feed_dict={X: X_new_scaled})
     y_pred = np.argmax(Z, axis=1)
