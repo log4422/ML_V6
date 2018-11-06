@@ -1,5 +1,6 @@
 # -----------------------------------------------------------------------------------------------------------------------
 # Autor: Lukas Götz
+# Softmax-Regression v2.1
 # Datum: 20.10.2018
 # -----------------------------------------------------------------------------------------------------------------------
 
@@ -24,9 +25,9 @@ mnist = input_data.read_data_sets('MNIST_data', one_hot=True)
 
 
 # Festlegung der Modelparameter------------------------------------------------------------------------------------------
-learning_rate = 0.7
+learning_rate = 0.695
 batch_size = 128
-n_epochs = 500
+n_epochs = 400
 size_image = 784
 n_class = 10
 
@@ -36,7 +37,7 @@ y = tf.placeholder(dtype=tf.int8, shape=(batch_size, n_class), name="y")
 
 # Definition von weights and bias
 w = tf.get_variable(name="weights", shape=(size_image, n_class), dtype=tf.float32,
-                    initializer=tf.random_uniform_initializer(-5, 5))
+                    initializer=tf.random_uniform_initializer(-1, 1))
 b = tf.get_variable(name="bias", shape=(1, n_class), dtype=tf.float32, initializer=tf.zeros_initializer())
 init = tf.initializers.global_variables()
 
@@ -56,7 +57,7 @@ accuarcy = tf.reduce_sum(tf.cast(corr_preds, tf.float32))
 
 
 # Training des Modells---------------------------------------------------------------------------------------------------
-#writer = tf.summary.FileWriter('G:\Semester_7\ML_V6/graphs', tf.get_default_graph())
+writer = tf.summary.FileWriter('G:\Semester_7\ML_V6/graphs', tf.get_default_graph())
 with tf.Session() as sess:
     sess.run(init)  # Initialisierung
     n_batches = int(mnist.train.num_examples / batch_size)  # Berechnung Anzahl batches
@@ -69,8 +70,8 @@ with tf.Session() as sess:
             _, n_loss = sess.run([train_step, loss], feed_dict={X: x_batch, y: y_batch})
             ges_loss += n_loss
         print("loss in epoche{0}: {1}".format(k, (ges_loss / n_batches)))
-    tf.Print(b, [b], "Wert für b:{0}".format([b]))
-    tf.Print(w, [w], "Wert für w:{0}".format([w]))
+
+
 
     # Berechnung der Vorhersagegenauigkeit
     n_batches = int(mnist.test.num_examples / batch_size)
@@ -81,5 +82,7 @@ with tf.Session() as sess:
         n_accuary = sess.run(accuarcy, feed_dict={X: x_batch, y: y_batch})
         corr_pred += n_accuary
     print("Genauigkeit des Modells: {0}".format(corr_pred / mnist.test.num_examples))
-#writer.close()
+    tf.Print(b, [b], "Wert für b:{0}".format([b]))
+    tf.Print(w, [w], "Wert für w:{0}".format([w]))
+writer.close()
 # -----------------------------------------------------------------------------------------------------------------------
