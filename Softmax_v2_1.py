@@ -78,7 +78,7 @@ with tf.Session() as sess:
     corr_pred = 0
 
     for k in range(n_batches):
-        x_batch, y_batch = mnist.train.next_batch(batch_size)
+        x_batch, y_batch = mnist.test.next_batch(batch_size)
         n_accuary = sess.run(accuarcy, feed_dict={X: x_batch, y: y_batch})
         corr_pred += n_accuary
     print("Genauigkeit des Modells: {0}".format(corr_pred / mnist.test.num_examples))
