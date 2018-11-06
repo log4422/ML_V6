@@ -36,7 +36,7 @@ def logits_pred(X, n_classes, size_image, scope_name):
     with tf.variable_scope(scope_name, reuse=tf.AUTO_REUSE) as scope:
         # Definition von weights and bias
         w = tf.get_variable(name="weights", shape=(size_image, n_classes), dtype=tf.float32,
-                        initializer=tf.random_uniform_initializer(-5, 5))
+                        initializer=tf.random_uniform_initializer(-1, 1))
         b = tf.get_variable(name="bias", shape=(1, n_classes), dtype=tf.float32,
                         initializer=tf.zeros_initializer())
 
@@ -60,13 +60,10 @@ class softmax_classifier(object):
         self.n_classes = 10
         self.size_image = 784
         self.batch_size = 128
-        self.lr = 0.702
+        self.lr = 0.695
         self.print_step = 20
         #global_step wird vom Optimizer inkrementiert
         self.gstep = tf.Variable(0, dtype=tf.int32, trainable=False, name="global_step")
-
-        #self.image  ->  Trainingsbild
-        #self.label  ->  zugeöhrige Klasse
 
     def get_data(self):
         # Definiton von Platzhaltern X und y um das Modell mit Testdaten zu füttern
