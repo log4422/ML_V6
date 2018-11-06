@@ -1,6 +1,5 @@
 #Machine Learning Versuch 6
 #Aufgabe D5
-#Version 1.1
 #Autor: Armin Sehr
 #Bearbeitung: Lukas Götz
 #Datum: 16.10.2018
