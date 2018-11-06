@@ -1,8 +1,8 @@
 #-----------------------------------------------------------------------------------------------------------------------
 #-----------------------------------------------------------------------------------------------------------------------
 # Autor: Lukas Götz
-# ConvNet zum MNIST-Datensatz v2.1
-# Datum: 05.11.2018
+# ConvNet-Regression v1.1
+# Datum: 29.10.2018
 #-----------------------------------------------------------------------------------------------------------------------
 #-----------------------------------------------------------------------------------------------------------------------
 
@@ -34,9 +34,9 @@ def conv_layer(inputs ,filters, k_size, stride, padding, scope_name):
     Durchführung der Faltung, Anwendung der Aktivierungsfunkiton
     """
     with tf.variable_scope(scope_name, reuse=tf.AUTO_REUSE) as scope:
-        #inputs[2,:] = tf.reshape(inputs[2,:], shape=[28, 28, 1])
+        if scope_name == "conv1":
+           inputs = tf.reshape(inputs, shape=[-1, 28, 28, 1])
 
-        inputs = tf.reshape(inputs, shape=[-1, 28, 28, 1])
         in_chanels = inputs.shape[-1]
         kernel = tf.get_variable("kernel",
                                  [k_size, k_size, in_chanels, filters],
@@ -47,7 +47,7 @@ def conv_layer(inputs ,filters, k_size, stride, padding, scope_name):
         conv = tf.nn.conv2d(inputs, kernel, strides=[1, stride, stride, 1], padding=padding)
         return tf.nn.relu(conv + biases, name=scope_name)
 
-
+#-----------------------------------------------------------------------------------------------------------------------
 
 def max_pool(inputs, ksize, stride, padding="VALID", scope_name="pool"):
     """
@@ -56,13 +56,13 @@ def max_pool(inputs, ksize, stride, padding="VALID", scope_name="pool"):
     with tf.variable_scope(scope_name, reuse=tf.AUTO_REUSE) as scope:
         pool = tf.nn.max_pool(inputs,
                               ksize=[1, ksize, ksize, 1],
-                              strides=[1, stride, stride, 2],
+                              strides=[1, stride, stride, 1],
                               padding=padding)
         return pool
 
+#-----------------------------------------------------------------------------------------------------------------------
 
-
-def fully_connection(inputs, out_dim, scope_name):
+def fully_connection(inputs, out_dim,  scope_name):
     """
     Funktion zur Vorhersage der Auftritswahrscheinlichkeiten
     """
@@ -76,6 +76,7 @@ def fully_connection(inputs, out_dim, scope_name):
 
         # Berechnung der Wahrscheinlichkeiten
         out = tf.matmul(inputs,w)+b
+
     return out
 #-----------------------------------------------------------------------------------------------------------------------
 #-----------------------------------------------------------------------------------------------------------------------
@@ -94,9 +95,10 @@ class convNet(object):
         self.n_classes = 10
         self.size_image = 784
         self.batch_size = 128
-        self.lr = 0.702
-        self.keep_prob = tf.constant(0.74)
+        self.lr = 0.001
+        self.keep_prob = tf.constant(0.75)
         self.print_step = 20
+        #self.training=True
         #global_step wird vom Optimizer inkrementiert
         self.gstep = tf.Variable(0, dtype=tf.int32, trainable=False, name="global_step")
 
@@ -110,24 +112,33 @@ class convNet(object):
         """
         Festlegung der Netzwerkstruktur
         """
+        print("self.X: ", self.X)
         conv1 = conv_layer(inputs=self.X,
                            filters=32,
                            k_size=5,
                            stride=1,
                            padding="SAME",
                            scope_name="conv1")
+        print("conv1: ", conv1)
         pool1 = max_pool(conv1, 2, 2, "VALID", "pool1")
+        print("pool1: ", pool1)
         conv2 = conv_layer(inputs=pool1,
                            filters=64,
                            k_size=5,
                            stride=1,
                            padding="SAME",
                            scope_name="conv2")
+        print("conv2: ", conv2)
         pool2 = max_pool(conv2, 2, 2, "VALID", "pool2")
+        print("pool2: ", pool2)
         feature_dim = pool2.shape[1] * pool2.shape[2] * pool2.shape[3]
+        print("feature_dim: ",feature_dim)
         pool2 = tf.reshape(pool2, [-1, feature_dim])
+        print("pool2_neo: ", pool2)
         fc =fully_connection(pool2, 1024 , scope_name="fc")
+
         dropout = tf.nn.dropout(tf.nn.relu(fc), self.keep_prob, name="relu_dropout")
+        #print("dropout: ",dropout)
         self.logits = fully_connection(dropout, self.n_classes, scope_name="logits")
 
     def loss(self):
@@ -136,6 +147,8 @@ class convNet(object):
         """
         with tf.name_scope("loss"):
             # Kreuzentropie liefert die Abweichung, muss noch mit 1/n multipliziert werden
+            print("self.logits: ", self.logits)
+            print("self.y: ", self.y)
             self.loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits_v2(labels=self.y, logits=self.logits,
                                                                               name="Kreuzentropie"))
     def optimize(self):
@@ -143,8 +156,7 @@ class convNet(object):
         Optimierung (Minimierung) der Kostenfunktion
         """
         with tf.name_scope("optimize"):
-            self.opt = tf.train.GradientDescentOptimizer(learning_rate=self.lr,
-                                                     name="Gradientenabstieg").minimize(self.loss, global_step=self.gstep)
+            self.opt = tf.train.AdamOptimizer(learning_rate=self.lr).minimize(self.loss, global_step=self.gstep)
 
     def evaluate(self):
         """
@@ -198,19 +210,21 @@ class convNet(object):
                     x_batch, y_batch = mnist.train.next_batch(self.batch_size)
                     _, n_loss = sess.run([self.opt, self.loss], feed_dict={self.X: x_batch, self.y: y_batch})
                     ges_loss += n_loss
-                print("loss in epoche{0}: {1}".format(k, (ges_loss / n_batches)))
 
+                print("loss in epoche{0}: {1}".format(k, (ges_loss / n_batches)))
+                #self.gstep += 1
+                #print("Step: ", self.gstep)
             # Berechnung der Vorhersagegenauigkeit
             n_batches = int(mnist.test.num_examples / self.batch_size)
             corr_pred = 0
 
             for k in range(n_batches):
-                x_batch, y_batch = mnist.train.next_batch(self.batch_size)
+                x_batch, y_batch = mnist.test.next_batch(self.batch_size)
                 n_accuary = sess.run(self.accuracy, feed_dict={self.X: x_batch, self.y: y_batch})
                 corr_pred += n_accuary
             print("Genauigkeit des Modells: {0}".format(corr_pred / mnist.test.num_examples))
-#            tf.Print(b, [b], "Wert für b:{0}".format([b]))
-#            tf.Print(w, [w], "Wert für w:{0}".format([w]))
+            #tf.Print(b, [b], "Wert für b:{0}".format([b]))
+            #tf.Print(w, [w], "Wert für w:{0}".format([w]))
 
         writer.close()
 
@@ -226,6 +240,6 @@ if __name__ == '__main__':
     """
     model = convNet()
     model.build()
-    model.train_neo(n_epochs=30)
+    model.train_neo(n_epochs=750)
 # ----------------------------------------------------------------------------------------------------------------------
 #-----------------------------------------------------------------------------------------------------------------------
