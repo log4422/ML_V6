@@ -1,6 +1,5 @@
 #Machine Learning Versuch 6
 #Aufgabe D3
-#Version 2.2
 #Autor: Lukas Götz
 #Datum: 13.10.2018
 
