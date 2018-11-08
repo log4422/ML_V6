@@ -34,9 +34,11 @@ def conv_layer(inputs ,filters, k_size, stride, padding, scope_name):
     """"
     Durchführung der Faltung, Anwendung der Aktivierungsfunkiton
     """
+    if scope_name == "conv1":
+        inputs = tf.reshape(inputs, shape=[-1, 28, 28, 1])
+
     with tf.variable_scope(scope_name, reuse=tf.AUTO_REUSE) as scope:
-        if scope_name == "conv1":
-           inputs = tf.reshape(inputs, shape=[-1, 28, 28, 1])
+
 
         in_chanels = inputs.shape[-1]
         kernel = tf.get_variable("kernel",
@@ -46,7 +48,7 @@ def conv_layer(inputs ,filters, k_size, stride, padding, scope_name):
                                  [filters],
                                  initializer=tf.random_normal_initializer())
         conv = tf.nn.conv2d(inputs, kernel, strides=[1, stride, stride, 1], padding=padding)
-        return tf.nn.relu(conv + biases, name=scope_name)
+        return tf.nn.relu(conv + biases, name="relu")
 
 #-----------------------------------------------------------------------------------------------------------------------
 
@@ -98,11 +100,9 @@ class convNet(object):
         self.batch_size = 128
         self.lr = 0.001
         self.keep_prob = tf.constant(0.75)
-        self.print_step = 20
-        #self.training=True
+        self.print_step = 100
         #global_step wird vom Optimizer inkrementiert
         self.gstep = tf.Variable(0, dtype=tf.int32, trainable=False, name="global_step")
-
 
     def get_data(self):
         # Definiton von Platzhaltern X und y um das Modell mit Testdaten zu füttern
@@ -138,8 +138,10 @@ class convNet(object):
         print("pool2_neo: ", pool2)
         fc =fully_connection(pool2, 1024 , scope_name="fc")
 
-        dropout = tf.nn.dropout(tf.nn.relu(fc), self.keep_prob, name="relu_dropout")
-        #print("dropout: ",dropout)
+        with tf.name_scope("regularisation") as scope:
+            dropout = tf.nn.dropout(tf.nn.relu(fc), self.keep_prob, name="relu_dropout")
+
+
         self.logits = fully_connection(dropout, self.n_classes, scope_name="logits")
 
     def loss(self):
@@ -164,7 +166,7 @@ class convNet(object):
         Berechnet die Vorhersagegenauigkeit
         """
         # Berechnet die Hypothese (sagt quasi y voraus)
-        with tf.name_scope("prediction"):
+        with tf.name_scope("prediciton"):
             h = tf.nn.softmax(self.logits)
 
             # Berechnung der Vorhersagegenauigkeit
@@ -218,12 +220,11 @@ class convNet(object):
                 for m in range(n_batches):
                     x_batch, y_batch = mnist.train.next_batch(self.batch_size)
                     _, n_loss, summaries = sess.run([self.opt, self.loss, self.summary_op], feed_dict={self.X: x_batch, self.y: y_batch})
-                    if (step%100) == 0:
+                    if (step%self.print_step) == 0:
                         writer.add_summary(summaries, global_step=step)
                     ges_loss += n_loss
                     step += 1
                 print("loss in epoche{0}: {1}".format(k, (ges_loss / n_batches)))
-
 
             # Berechnung der Vorhersagegenauigkeit
             n_batches = int(mnist.test.num_examples / self.batch_size)
@@ -240,7 +241,11 @@ class convNet(object):
         # Ausgabe der Programmlaufzeit
         end_zeit = time.time()
         laufzeit = end_zeit-start_zeit
-        print("\n Das Training des Models benötigte {0:2.2f} Sekunden".format(laufzeit))
+        print("\nDas Training des Models benötigte {0:2.2f} Sekunden".format(laufzeit))
+
+        print(int(mnist.train.num_examples/1))
+        print(int(mnist.test.num_examples/1))
+        print(int(mnist.validation.num_examples/1))
 
 #-----------------------------------------------------------------------------------------------------------------------
 #-----------------------------------------------------------------------------------------------------------------------
@@ -254,7 +259,7 @@ if __name__ == '__main__':
     Ausführen des Programms zur Softmax-Klassifikation des MNIST-Datensatzes
     """
     model = convNet()
-    model.build()                   # Erstellen eines Objekts convNET
-    model.train_neo(n_epochs=50)    # Trainieren des Modells mit n-Epochen
+    model.build()                   # Erstellen eines Objekts convNet
+    model.train_neo(n_epochs=10)    # Trainieren des Modells mit n-Epochen
 # ----------------------------------------------------------------------------------------------------------------------
 #-----------------------------------------------------------------------------------------------------------------------
