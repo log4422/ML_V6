@@ -22,7 +22,7 @@ mnist = input_data.read_data_sets('MNIST_data', one_hot=True)
 
 
 # Festlegung der Modelparameter------------------------------------------------------------------------------------------
-learning_rate = 0.695
+learning_rate = 0.4
 batch_size = 128
 n_epochs = 400
 size_image = 784
@@ -60,7 +60,7 @@ with tf.name_scope("accuarcy"):
 
 
 # Training des Modells---------------------------------------------------------------------------------------------------
-writer = tf.summary.FileWriter('G:\Semester_7\ML_V6/graphs', tf.get_default_graph())
+writer = tf.summary.FileWriter('G:\Semester_7\ML_V6\graphs/lr', tf.get_default_graph())
 with tf.Session() as sess:
     sess.run(init)                                          # Initialisierung
     n_batches = int(mnist.train.num_examples / batch_size)  # Berechnung Anzahl batches
