@@ -4,8 +4,6 @@
     Hier werden Initialisierung vorgenommen, Bibliotheken eingebunden und der MNIST-Datensatz geladen
     """
 # -----------------------------------------------------------------------------------------------------------------------
-
-
 # Festlegung der Modellparameter------------------------------------------------------------------------------------------
     """
     Festlegung der Modellparameter
@@ -19,8 +17,6 @@
     (Softmax-Regression, Bestimmung der Modellgenauigkeit, ...)
     """
 # -----------------------------------------------------------------------------------------------------------------------
-
-
 # Training des Modells---------------------------------------------------------------------------------------------------
     """
     Filtewriter definieren (für die Visualisierung via Tensorboard)
